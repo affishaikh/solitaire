@@ -1,5 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Deck from './Deck';
+import App from './App';
 
-ReactDOM.render(<Deck/>, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
