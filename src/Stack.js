@@ -1,7 +1,11 @@
 import React from 'react';
 import './main.css';
 
-class Waste extends React.Component {
+class Stack extends React.Component {
+  drag = event => {
+    event.dataTransfer.setData('text', event.target.id);
+  };
+
   render() {
     return (
       <div className="card" onClick={this.props.onClick}>
@@ -11,4 +15,4 @@ class Waste extends React.Component {
   }
 }
 
-export default Waste;
+export default Stack;
