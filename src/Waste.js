@@ -1,7 +1,7 @@
 import React from 'react';
 import './main.css';
 
-class Stack extends React.Component {
+class Waste extends React.Component {
   render() {
     return (
       <div className="card" onClick={this.props.onClick}>
@@ -11,4 +11,4 @@ class Stack extends React.Component {
   }
 }
 
-export default Stack;
+export default Waste;

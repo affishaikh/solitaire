@@ -11,7 +11,7 @@ body {
 }
 
 .card {
-  width: 10%;
+  width: 50%;
   height: 30%;
   font-size: 200px;
   border: 2px solid black;
@@ -24,4 +24,26 @@ main {
 
   display: flex;
   flex-direction: row;
+}
+
+.stock-side {
+  width: 20%;
+  display: flex;
+  flex-direction: row;
+}
+
+.foundation {
+  width: 12.5%;
+  height: 30%;
+  margin-left: 10px;
+  font-size: 200px;
+  border: 2px solid black;
+  align-items: center;
+}
+
+.foundations {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }

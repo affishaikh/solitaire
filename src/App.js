@@ -1,6 +1,6 @@
 import React from 'react';
-import Stack from './Stack';
-import Pile from './Pile';
+import Stock from './Stock';
+import Foundations from './Foundations';
 import cards from './data/cards';
 import Game from './models/game';
 import _ from 'lodash';
@@ -73,12 +73,13 @@ class App extends React.Component {
 
     return (
       <main>
-        <Stack
+        <Stock
+          onStackClick={onStackClick}
           unicode={unicode}
           stackLength={this.state.stackLength}
-          onClick={onStackClick}
+          card={_.head(this.state.pile)}
         />
-        <Pile card={_.head(this.state.pile)} />
+        <Foundations />
       </main>
     );
   }
