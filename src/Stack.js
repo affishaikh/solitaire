@@ -3,7 +3,11 @@ import './main.css';
 
 class Stack extends React.Component {
   render() {
-    return <div className="stack">{'\u{1F0A0}'}</div>;
+    return (
+      <div className="stack" onClick={this.props.onClick}>
+        {'\u{1F0A0}'}
+      </div>
+    );
   }
 }
 
