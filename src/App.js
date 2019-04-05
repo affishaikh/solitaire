@@ -21,18 +21,28 @@ class App extends React.Component {
     game.startGame();
   }
 
+  getUnicodeCard(drawnCard) {
+    return cards.find(unicodeCard => {
+      return (
+        unicodeCard.type === drawnCard.type &&
+        unicodeCard.number === drawnCard.number
+      );
+    });
+  }
+
+  updatePile(drawnCard) {
+    const drawnUnicodeCard = this.getUnicodeCard(drawnCard);
+    this.setState(state => {
+      const pile = _.cloneDeep(state.pile);
+      pile.unshift(drawnUnicodeCard);
+      return { pile };
+    });
+  }
+
   drawCard() {
     const { game } = this.state;
-    game.drawCard();
-    this.setState(() => {
-      const pile = game.getPile();
-      const pile1 = pile.map(card => {
-        return cards.find(card1 => {
-          return card1.type == card.type && card1.number == card.number;
-        });
-      });
-      return { pile: pile1 };
-    });
+    const drawnCard = game.drawCard();
+    this.updatePile(drawnCard);
   }
 
   render() {

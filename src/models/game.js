@@ -22,6 +22,7 @@ class Game {
     const drawnCard = _.last(this.stack);
     this.stack.pop();
     this.pile.unshift(drawnCard);
+    return drawnCard;
   }
 
   getPile() {
