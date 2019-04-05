@@ -14,10 +14,6 @@ class Game {
     this.pile = [];
   }
 
-  // startGame() {
-  //   this.stack = ;
-  // }
-
   drawCard() {
     const drawnCard = _.last(this.stack);
     this.stack.pop();

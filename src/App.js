@@ -4,7 +4,9 @@ import Pile from './Pile';
 import cards from './data/cards';
 import Game from './models/game';
 import _ from 'lodash';
-import './main.css';
+
+const CARD_BACK_UNICODE = '\u{1F0A0}';
+const RELOAD_BUTTON_UNICODE = '\u{21BB}';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,11 +19,8 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const { game } = this.state;
-  }
-
   getUnicodeCard(drawnCard) {
+    console.log(drawnCard);
     return cards.find(unicodeCard => {
       return (
         unicodeCard.type === drawnCard.type &&
@@ -42,7 +41,7 @@ class App extends React.Component {
   drawCard() {
     const { game } = this.state;
     const drawnCard = game.drawCard();
-    this.setState({ stackLength: this.state.stackLength - 1 });
+    this.setState({ stackLength: game.getStackLength() });
     this.updatePile(drawnCard);
   }
 
@@ -53,20 +52,32 @@ class App extends React.Component {
   reloadStack() {
     const { game } = this.state;
     game.reloadStack();
-    this.setState({ stackLength: this.state.stackLength - 1 });
+    this.setState({ stackLength: game.getStackLength() });
     this.emptyPile();
   }
 
-  render() {
+  getDetailsForStack() {
     const { stackLength } = this.state;
     let onStackClick = this.drawCard.bind(this);
+    let unicode = CARD_BACK_UNICODE;
     if (stackLength === 0) {
       onStackClick = this.reloadStack.bind(this);
+      unicode = RELOAD_BUTTON_UNICODE;
     }
+
+    return { onStackClick, unicode };
+  }
+
+  render() {
+    const { onStackClick, unicode } = this.getDetailsForStack();
 
     return (
       <main>
-        <Stack stackLength={this.state.stackLength} onClick={onStackClick} />
+        <Stack
+          unicode={unicode}
+          stackLength={this.state.stackLength}
+          onClick={onStackClick}
+        />
         <Pile card={_.head(this.state.pile)} />
       </main>
     );
