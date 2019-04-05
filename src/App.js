@@ -12,13 +12,13 @@ class App extends React.Component {
     const game = new Game();
     this.state = {
       game,
-      pile: game.getPile()
+      pile: game.getPile(),
+      stackLength: game.getStackLength()
     };
   }
 
   componentDidMount() {
     const { game } = this.state;
-    game.startGame();
   }
 
   getUnicodeCard(drawnCard) {
@@ -42,13 +42,31 @@ class App extends React.Component {
   drawCard() {
     const { game } = this.state;
     const drawnCard = game.drawCard();
+    this.setState({ stackLength: this.state.stackLength - 1 });
     this.updatePile(drawnCard);
   }
 
+  emptyPile() {
+    this.setState({ pile: [] });
+  }
+
+  reloadStack() {
+    const { game } = this.state;
+    game.reloadStack();
+    this.setState({ stackLength: this.state.stackLength - 1 });
+    this.emptyPile();
+  }
+
   render() {
+    const { stackLength } = this.state;
+    let onStackClick = this.drawCard.bind(this);
+    if (stackLength === 0) {
+      onStackClick = this.reloadStack.bind(this);
+    }
+
     return (
       <main>
-        <Stack onClick={this.drawCard.bind(this)} />
+        <Stack stackLength={this.state.stackLength} onClick={onStackClick} />
         <Pile card={_.head(this.state.pile)} />
       </main>
     );

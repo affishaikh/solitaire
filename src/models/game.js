@@ -10,13 +10,13 @@ const createStack = function() {
 
 class Game {
   constructor() {
-    this.stack = [];
+    this.stack = createStack();
     this.pile = [];
   }
 
-  startGame() {
-    this.stack = createStack();
-  }
+  // startGame() {
+  //   this.stack = ;
+  // }
 
   drawCard() {
     const drawnCard = _.last(this.stack);
@@ -27,6 +27,14 @@ class Game {
 
   getPile() {
     return _.cloneDeep(this.pile);
+  }
+
+  reloadStack() {
+    this.stack = _.cloneDeep(this.pile);
+  }
+
+  getStackLength() {
+    return this.stack.length;
   }
 }
 
