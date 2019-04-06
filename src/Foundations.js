@@ -6,10 +6,10 @@ class Foundations extends React.Component {
   render() {
     return (
       <div className="foundations">
-        <Foundation />
-        <Foundation />
-        <Foundation />
-        <Foundation />
+        <Foundation removeFromPile={this.props.removeFromPile} />
+        <Foundation removeFromPile={this.props.removeFromPile} />
+        <Foundation removeFromPile={this.props.removeFromPile} />
+        <Foundation removeFromPile={this.props.removeFromPile} />
       </div>
     );
   }

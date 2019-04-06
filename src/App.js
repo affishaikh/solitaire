@@ -12,15 +12,15 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     const game = new Game();
+    game.startGame();
     this.state = {
       game,
-      pile: game.getPile(),
+      pile: [],
       stackLength: game.getStackLength()
     };
   }
 
   getUnicodeCard(drawnCard) {
-    console.log(drawnCard);
     return cards.find(unicodeCard => {
       return (
         unicodeCard.type === drawnCard.type &&
@@ -29,7 +29,7 @@ class App extends React.Component {
     });
   }
 
-  updatePile(drawnCard) {
+  addToPile(drawnCard) {
     const drawnUnicodeCard = this.getUnicodeCard(drawnCard);
     this.setState(state => {
       const pile = _.cloneDeep(state.pile);
@@ -38,11 +38,18 @@ class App extends React.Component {
     });
   }
 
+  removeFromPile() {
+    this.setState(state => {
+      state.pile.shift();
+      return { state };
+    });
+  }
+
   drawCard() {
     const { game } = this.state;
     const drawnCard = game.drawCard();
     this.setState({ stackLength: game.getStackLength() });
-    this.updatePile(drawnCard);
+    this.addToPile(drawnCard);
   }
 
   emptyPile() {
@@ -54,6 +61,12 @@ class App extends React.Component {
     game.reloadStack();
     this.setState({ stackLength: game.getStackLength() });
     this.emptyPile();
+  }
+
+  moveCardFromPile() {
+    const { game } = this.state;
+    game.moveCardFromPile();
+    this.removeFromPile();
   }
 
   getDetailsForStack() {
@@ -79,7 +92,7 @@ class App extends React.Component {
           stackLength={this.state.stackLength}
           card={_.head(this.state.pile)}
         />
-        <Foundations />
+        <Foundations removeFromPile={this.removeFromPile.bind(this)} />
       </main>
     );
   }

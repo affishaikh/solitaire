@@ -1,6 +1,8 @@
 import Card from './card';
 import cards from '../data/cards';
 import _ from 'lodash';
+import Foundations from './foundations';
+import Foundation from './foundation';
 
 const createStack = function() {
   return cards.map(card => {
@@ -10,8 +12,18 @@ const createStack = function() {
 
 class Game {
   constructor() {
-    this.stack = createStack();
+    this.stack = [];
+    this.foundations = new Foundations();
     this.pile = [];
+  }
+
+  startGame() {
+    this.stack = createStack();
+    this.foundations
+      .addFoundation(new Foundation(1))
+      .addFoundation(new Foundation(2))
+      .addFoundation(new Foundation(3))
+      .addFoundation(new Foundation(4));
   }
 
   drawCard() {
@@ -27,6 +39,10 @@ class Game {
 
   reloadStack() {
     this.stack = _.cloneDeep(this.pile);
+  }
+
+  moveCardFromPile() {
+    this.pile.pop();
   }
 
   getStackLength() {
