@@ -19,8 +19,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       stack: createStack(),
-      pile: [],
-      foundations: []
+      foundations: [[], [], [], []],
+      pile: []
     };
   }
 
@@ -28,6 +28,25 @@ class App extends React.Component {
     this.setState(state => {
       state.pile.shift();
       return { state };
+    });
+  }
+
+  removeFromFoundation(index) {
+    console.log('removeFromFoundation');
+    this.setState(state => {
+      const { foundations } = state;
+      foundations[index].pop();
+      return { foundations };
+    });
+  }
+
+  addToFoundation(index, card) {
+    console.log('addToFoundation');
+    console.log(index);
+    this.setState(state => {
+      const { foundations } = state;
+      foundations[index].push(card);
+      return { foundations };
     });
   }
 
@@ -81,7 +100,10 @@ class App extends React.Component {
         />
         <Foundations
           foundation={this.state.foundations}
+          addToFoundation={this.addToFoundation.bind(this)}
+          removeFromFoundation={this.removeFromFoundation.bind(this)}
           removeFromPile={this.removeFromPile.bind(this)}
+          foundations={this.state.foundations}
         />
       </main>
     );

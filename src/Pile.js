@@ -5,14 +5,13 @@ import './main.css';
 class Pile extends React.Component {
   render() {
     if (this.props.card) {
-      const { unicode } = this.props.card;
       return (
-        <div className="card">
-          <Card unicode={unicode} />
+        <div className="container" id="pile">
+          <Card card={this.props.card} />
         </div>
       );
     }
-    return <div className="card" />;
+    return <div className="container" />;
   }
 }
 

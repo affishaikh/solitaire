@@ -23,28 +23,40 @@ main {
   height: 215px;
 
   font-size: 200px;
-  border: 2px solid black;
-  
+
   align-items: center;
 }
 
-.stock-side {
-  width: 288px;
-  height: 215px;
-
-  display: flex;
-  flex-direction: row;
-}
-
-.foundation {
+.container {
   width: 144px;
   height: 215px;
 
   font-size: 200px;
-  border: 2px solid black;
+  border: 2px solid purple;
+  border-radius: 3%;
 
   margin-left: 10px;
   align-items: center;
+}
+
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
+}
+
+.blue {
+  color: purple;
+}
+
+.stock-side {
+  width: 330px;
+  height: 215px;
+
+  display: flex;
+  flex-direction: row;
 }
 
 .foundations {

@@ -11,10 +11,10 @@ const getCard = function(unicode) {
 };
 
 class Foundation extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { cards: [] };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = { cards: [] };
+  // }
 
   allowDrop = event => {
     event.preventDefault();
@@ -22,34 +22,40 @@ class Foundation extends React.Component {
 
   drop = event => {
     event.preventDefault();
-    const data = event.dataTransfer.getData('text');
+    const data = event.dataTransfer.getData('id');
     const card = getCard(data);
-    this.setState(state => {
-      state.cards.push(card);
-      return { state };
-    });
-    this.props.removeFromPile();
+    const sourceId = event.dataTransfer.getData('sourceId');
+    this.props.addToFoundation(this.props.id.split('-')[1], card);
+
+    if (sourceId.startsWith('foundation')) {
+      const foundationNumber = +sourceId.split('-')[1];
+      this.props.removeFromFoundation(foundationNumber);
+    } else {
+      this.props.removeFromPile();
+    }
   };
 
   render() {
-    if (this.state.cards.length === 0) {
+    const card = _.last(this.props.foundation);
+    console.log(card);
+    if (!card) {
       return (
         <div
           onDragOver={this.allowDrop}
           onDrop={this.drop}
-          className="foundation"
+          className="container"
         />
       );
     }
 
-    const card = _.last(this.state.cards);
     return (
       <div
+        id={this.props.id}
         onDragOver={this.allowDrop}
         onDrop={this.drop}
-        className="foundation"
+        className="container"
       >
-        <Card unicode={card.unicode} />
+        <Card card={card} />
       </div>
     );
   }

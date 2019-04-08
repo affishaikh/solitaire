@@ -3,17 +3,20 @@ import './main.css';
 
 class Card extends React.Component {
   drag = event => {
-    event.dataTransfer.setData('text', event.target.id);
+    event.dataTransfer.setData('id', event.target.id);
+    event.dataTransfer.setData('sourceId', event.target.parentNode.id);
   };
 
   render() {
-    const { unicode } = this.props;
+    const { unicode, color } = this.props.card;
+    const className = 'card ' + color;
+
     return (
       <div
         draggable="true"
         id={unicode}
         onDragStart={this.drag}
-        className="card"
+        className={className}
       >
         {unicode}
       </div>
