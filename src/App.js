@@ -26,25 +26,23 @@ class App extends React.Component {
 
   removeFromPile() {
     this.setState(state => {
-      state.pile.shift();
-      return { state };
+      const pile = _.cloneDeep(state.pile);
+      pile.shift();
+      return { pile };
     });
   }
 
   removeFromFoundation(index) {
-    console.log('removeFromFoundation');
     this.setState(state => {
-      const { foundations } = state;
+      const foundations = _.cloneDeep(state.foundations);
       foundations[index].pop();
       return { foundations };
     });
   }
 
   addToFoundation(index, card) {
-    console.log('addToFoundation');
-    console.log(index);
     this.setState(state => {
-      const { foundations } = state;
+      const foundations = _.cloneDeep(state.foundations);
       foundations[index].push(card);
       return { foundations };
     });
@@ -59,11 +57,11 @@ class App extends React.Component {
   }
 
   drawCard() {
+    const drawnCard = _.last(this.state.stack);
     this.setState(state => {
-      const drawnCard = _.last(state.stack);
       state.stack.pop();
-      this.addToPile(drawnCard);
     });
+    this.addToPile(drawnCard);
   }
 
   reloadStack() {

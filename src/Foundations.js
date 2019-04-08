@@ -4,8 +4,7 @@ import './main.css';
 
 class Foundations extends React.Component {
   render() {
-    const {foundations} = this.props;
-    console.log(foundations);
+    const { foundations } = this.props;
     return (
       <div className="foundations">
         <Foundation

@@ -11,33 +11,28 @@ const getCard = function(unicode) {
 };
 
 class Foundation extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = { cards: [] };
-  // }
-
   allowDrop = event => {
     event.preventDefault();
   };
 
   drop = event => {
     event.preventDefault();
-    const data = event.dataTransfer.getData('id');
-    const card = getCard(data);
+    const id = event.dataTransfer.getData('id');
+    const card = getCard(id);
     const sourceId = event.dataTransfer.getData('sourceId');
-    this.props.addToFoundation(this.props.id.split('-')[1], card);
+
+    const foundationIndex = +this.props.id.split('-')[1];
+    this.props.addToFoundation(foundationIndex, card);
 
     if (sourceId.startsWith('foundation')) {
-      const foundationNumber = +sourceId.split('-')[1];
-      this.props.removeFromFoundation(foundationNumber);
-    } else {
-      this.props.removeFromPile();
+      const sourceFoundationIndex = +sourceId.split('-')[1];
+      return this.props.removeFromFoundation(sourceFoundationIndex);
     }
+    this.props.removeFromPile();
   };
 
   render() {
     const card = _.last(this.props.foundation);
-    console.log(card);
     if (!card) {
       return (
         <div
