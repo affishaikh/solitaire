@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from './Card';
+import Card from './CardView';
 import './main.css';
 
 class Pile extends React.Component {
@@ -8,7 +8,7 @@ class Pile extends React.Component {
       const { unicode } = this.props.card;
       return (
         <div className="card">
-          <Card unicode={unicode}/>
+          <Card unicode={unicode} />
         </div>
       );
     }

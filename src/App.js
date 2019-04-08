@@ -2,8 +2,14 @@ import React from 'react';
 import Stock from './Stock';
 import Foundations from './Foundations';
 import cards from './data/cards';
-import Game from './models/game';
+import Card from './models/card';
 import _ from 'lodash';
+
+const createStack = function() {
+  return cards.map(card => {
+    return new Card(card.type, card.number, card.unicode, card.color);
+  });
+};
 
 const CARD_BACK_UNICODE = '\u{1F0A0}';
 const RELOAD_BUTTON_UNICODE = '\u{21BB}';
@@ -11,31 +17,11 @@ const RELOAD_BUTTON_UNICODE = '\u{21BB}';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    const game = new Game();
-    game.startGame();
     this.state = {
-      game,
+      stack: createStack(),
       pile: [],
-      stackLength: game.getStackLength()
+      foundations: []
     };
-  }
-
-  getUnicodeCard(drawnCard) {
-    return cards.find(unicodeCard => {
-      return (
-        unicodeCard.type === drawnCard.type &&
-        unicodeCard.number === drawnCard.number
-      );
-    });
-  }
-
-  addToPile(drawnCard) {
-    const drawnUnicodeCard = this.getUnicodeCard(drawnCard);
-    this.setState(state => {
-      const pile = _.cloneDeep(state.pile);
-      pile.unshift(drawnUnicodeCard);
-      return { pile };
-    });
   }
 
   removeFromPile() {
@@ -45,34 +31,35 @@ class App extends React.Component {
     });
   }
 
-  drawCard() {
-    const { game } = this.state;
-    const drawnCard = game.drawCard();
-    this.setState({ stackLength: game.getStackLength() });
-    this.addToPile(drawnCard);
+  addToPile(drawnCard) {
+    this.setState(state => {
+      const pile = _.cloneDeep(state.pile);
+      pile.unshift(drawnCard);
+      return { pile };
+    });
   }
 
-  emptyPile() {
-    this.setState({ pile: [] });
+  drawCard() {
+    this.setState(state => {
+      const drawnCard = _.last(state.stack);
+      state.stack.pop();
+      this.addToPile(drawnCard);
+    });
   }
 
   reloadStack() {
-    const { game } = this.state;
-    game.reloadStack();
-    this.setState({ stackLength: game.getStackLength() });
-    this.emptyPile();
-  }
-
-  moveCardFromPile() {
-    const { game } = this.state;
-    game.moveCardFromPile();
-    this.removeFromPile();
+    this.setState(state => {
+      const stack = _.cloneDeep(state.pile);
+      const pile = [];
+      return { stack, pile };
+    });
   }
 
   getDetailsForStack() {
-    const { stackLength } = this.state;
     let onStackClick = this.drawCard.bind(this);
     let unicode = CARD_BACK_UNICODE;
+    const stackLength = this.state.stack.length;
+
     if (stackLength === 0) {
       onStackClick = this.reloadStack.bind(this);
       unicode = RELOAD_BUTTON_UNICODE;
@@ -89,10 +76,13 @@ class App extends React.Component {
         <Stock
           onStackClick={onStackClick}
           unicode={unicode}
-          stackLength={this.state.stackLength}
+          stackLength={this.state.stack.length}
           card={_.head(this.state.pile)}
         />
-        <Foundations removeFromPile={this.removeFromPile.bind(this)} />
+        <Foundations
+          foundation={this.state.foundations}
+          removeFromPile={this.removeFromPile.bind(this)}
+        />
       </main>
     );
   }
