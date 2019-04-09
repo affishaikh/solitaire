@@ -38,14 +38,11 @@ main {
   width: 144px;
   height: 180px;
 
-  font-size: 200px;
   border: 2px solid purple;
   border-radius: 3%;
   background-color: #dcfafc;
 
-
   margin-left: 10px;
-  align-items: center;
 }
 
 .red {
@@ -79,7 +76,7 @@ main {
 
 .tableau {
   width: 144px;
-  height: 1000px;
+  height: 600px;
   margin-top: 150px;
 
   display: flex;
@@ -96,7 +93,7 @@ main {
   justify-content: space-around;
 }
 
-.tableau-card {
+.tableau-card-container {
   background-color: #dcfafc;
   border-radius: 3%;
   position: relative;

@@ -15,17 +15,24 @@ class Foundation extends React.Component {
     event.preventDefault();
   };
 
+  getFoundationIndex = foundationId => {
+    return +foundationId.split('-')[1];
+  };
+
+  isSourceFoundation = sourceId => sourceId.startsWith('foundation');
+
   drop = event => {
     event.preventDefault();
     const id = event.dataTransfer.getData('id');
-    const card = getCard(id);
     const sourceId = event.dataTransfer.getData('sourceId');
 
-    const foundationIndex = +this.props.id.split('-')[1];
+    const card = getCard(id);
+    const foundationIndex = this.getFoundationIndex(this.props.id);
+
     this.props.addToFoundation(foundationIndex, card);
 
-    if (sourceId.startsWith('foundation')) {
-      const sourceFoundationIndex = +sourceId.split('-')[1];
+    if (this.isSourceFoundation(sourceId)) {
+      const sourceFoundationIndex = this.getFoundationIndex(sourceId);
       return this.props.removeFromFoundation(sourceFoundationIndex);
     }
     this.props.removeFromPile();

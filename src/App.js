@@ -12,29 +12,31 @@ const RELOAD_BUTTON_UNICODE = '\u{21BB}';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    const stack = this.createStack();
+    const deck = this.createDeck();
+    const { stack, tableaus } = this.createTableausFromDeck(_.cloneDeep(deck));
     this.state = {
+      tableaus,
       stack,
-      tableaus: this.createTableaus(stack),
       foundations: [[], [], [], []],
       pile: []
     };
   }
 
-  createStack() {
+  createDeck() {
     const stack = cards.map(card => {
       return new Card(card.type, card.number, card.unicode, card.color);
     });
     return _.shuffle(stack);
   }
 
-  createTableaus(stack) {
+  createTableausFromDeck(deck) {
     const tableaus = [];
+    const stack = _.cloneDeep(deck);
     for (let i = 1; i <= 7; i++) {
       const tableau = stack.splice(-i);
       tableaus.push(tableau);
     }
-    return tableaus;
+    return { stack, tableaus };
   }
 
   removeFromPile() {
