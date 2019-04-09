@@ -3,6 +3,7 @@ body {
   margin: 0;
   width: 100%;
   height: 100%;
+  background-color: lightcoral;
 }
 
 #root {
@@ -75,6 +76,7 @@ main {
 .tableau {
   width: 144px;
   height: 1000px;
+  margin-top: 170px;
 
   display: flex;
   flex-direction: column;
@@ -88,4 +90,11 @@ main {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.tableau-card {
+  background-color: #dcfafc;
+  border-radius: 3%;
+  position: relative;
+  margin-top: -130px;
 }

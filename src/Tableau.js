@@ -5,7 +5,7 @@ import './main.css';
 class Tableau extends React.Component {
   createCards(cards) {
     return cards.map(card => {
-      return <Card key={card.unicode} card={card} />;
+      return <div className="tableau-card"><Card key={card.unicode} card={card} /></div>;
     });
   }
 
