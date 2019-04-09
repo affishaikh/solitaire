@@ -8,7 +8,7 @@ class Stack extends React.Component {
 
   render() {
     return (
-      <div className="container blue" onClick={this.props.onClick}>
+      <div className="container purple card" onClick={this.props.onClick}>
         {this.props.unicode}
       </div>
     );
