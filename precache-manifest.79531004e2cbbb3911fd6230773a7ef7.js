@@ -4,19 +4,19 @@ self.__precacheManifest = [
     "url": "/solitaire/static/js/runtime~main.1eee08ec.js"
   },
   {
-    "revision": "f270b7c0e7a389686cbe",
-    "url": "/solitaire/static/js/main.74c3de42.chunk.js"
+    "revision": "4fc7d42199f20bb7d2cf",
+    "url": "/solitaire/static/js/main.c5209b55.chunk.js"
   },
   {
     "revision": "5e44cd857d4f997abac3",
     "url": "/solitaire/static/js/2.a401ab6f.chunk.js"
   },
   {
-    "revision": "f270b7c0e7a389686cbe",
-    "url": "/solitaire/static/css/main.9bfd82f2.chunk.css"
+    "revision": "4fc7d42199f20bb7d2cf",
+    "url": "/solitaire/static/css/main.d745fc61.chunk.css"
   },
   {
-    "revision": "73f2b77bacdba5e465d0cf013d2e4119",
+    "revision": "d722e08fcc0c7fd541fea2d52e410b82",
     "url": "/solitaire/index.html"
   }
 ];
