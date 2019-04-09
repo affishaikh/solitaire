@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from './CardView';
+import Card from './Card';
 import './main.css';
 
 class Pile extends React.Component {

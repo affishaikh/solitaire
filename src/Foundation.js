@@ -1,6 +1,6 @@
 import React from 'react';
 import cards from './data/cards';
-import Card from './CardView';
+import Card from './Card';
 import './main.css';
 import _ from 'lodash';
 

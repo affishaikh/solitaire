@@ -1,15 +1,10 @@
 import React from 'react';
 import Stock from './Stock';
 import Foundations from './Foundations';
+import Tableaus from './Tableaus';
 import cards from './data/cards';
 import Card from './models/card';
 import _ from 'lodash';
-
-const createStack = function() {
-  return cards.map(card => {
-    return new Card(card.type, card.number, card.unicode, card.color);
-  });
-};
 
 const CARD_BACK_UNICODE = '\u{1F0A0}';
 const RELOAD_BUTTON_UNICODE = '\u{21BB}';
@@ -17,11 +12,29 @@ const RELOAD_BUTTON_UNICODE = '\u{21BB}';
 class App extends React.Component {
   constructor(props) {
     super(props);
+    const stack = this.createStack();
     this.state = {
-      stack: createStack(),
+      stack,
+      tableaus: this.createTableaus(stack),
       foundations: [[], [], [], []],
       pile: []
     };
+  }
+
+  createStack() {
+    const stack = cards.map(card => {
+      return new Card(card.type, card.number, card.unicode, card.color);
+    });
+    return _.shuffle(stack);
+  }
+
+  createTableaus(stack) {
+    const tableaus = [];
+    for (let i = 1; i <= 7; i++) {
+      const tableau = stack.splice(-i);
+      tableaus.push(tableau);
+    }
+    return tableaus;
   }
 
   removeFromPile() {
@@ -90,19 +103,22 @@ class App extends React.Component {
 
     return (
       <main>
-        <Stock
-          onStackClick={onStackClick}
-          unicode={unicode}
-          stackLength={this.state.stack.length}
-          card={_.head(this.state.pile)}
-        />
-        <Foundations
-          foundation={this.state.foundations}
-          addToFoundation={this.addToFoundation.bind(this)}
-          removeFromFoundation={this.removeFromFoundation.bind(this)}
-          removeFromPile={this.removeFromPile.bind(this)}
-          foundations={this.state.foundations}
-        />
+        <div className="upper-side">
+          <Stock
+            onStackClick={onStackClick}
+            unicode={unicode}
+            stackLength={this.state.stack.length}
+            card={_.head(this.state.pile)}
+          />
+          <Foundations
+            foundation={this.state.foundations}
+            addToFoundation={this.addToFoundation.bind(this)}
+            removeFromFoundation={this.removeFromFoundation.bind(this)}
+            removeFromPile={this.removeFromPile.bind(this)}
+            foundations={this.state.foundations}
+          />
+        </div>
+        <Tableaus tableaus={this.state.tableaus} />
       </main>
     );
   }
