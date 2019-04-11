@@ -9,17 +9,53 @@ import _ from 'lodash';
 const CARD_BACK_UNICODE = '\u{1F0A0}';
 const RELOAD_BUTTON_UNICODE = '\u{21BB}';
 
+const getCard = function(unicode) {
+  return cards.find(card => {
+    return card.unicode === unicode;
+  });
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     const deck = this.createDeck();
     const { stack, tableaus } = this.createTableausFromDeck(_.cloneDeep(deck));
+    this.dropOnTableau = this.dropOnTableau.bind(this);
+    this.dropOnFoundation = this.dropOnFoundation.bind(this);
     this.state = {
       tableaus,
       stack,
       foundations: [[], [], [], []],
       pile: []
     };
+  }
+
+  getIndex(id) {
+    return id.split('-')[1];
+  }
+
+  isSourceFoundation(sourceId) {
+    return sourceId.startsWith('foundation');
+  }
+
+  dropOnFoundation(event) {
+    event.preventDefault();
+    const id = event.dataTransfer.getData('id');
+    const sourceId = event.dataTransfer.getData('sourceId');
+    const card = getCard(id);
+    let foundationIndex = this.getIndex(event.target.id);
+
+    if (!this.isSourceFoundation(event.target.id)) {
+      foundationIndex = this.getIndex(event.target.parentNode.id);
+    }
+
+    this.addToFoundation(foundationIndex, card);
+
+    if (this.isSourceFoundation(sourceId)) {
+      const sourceFoundationIndex = this.getIndex(sourceId);
+      return this.removeFromFoundation(sourceFoundationIndex);
+    }
+    this.removeFromPile();
   }
 
   createDeck() {
@@ -87,6 +123,22 @@ class App extends React.Component {
     });
   }
 
+  dropOnTableau(event) {
+    const sourceId = event.dataTransfer.getData('sourceId');
+    const id = event.dataTransfer.getData('id');
+    let destinationId = event.target.id;
+    if (event.target.parentNode.parentNode.id) {
+      destinationId = event.target.parentNode.parentNode.id;
+    }
+    const sourceIndex = sourceId.split('-')[1];
+    const destinationIndex = destinationId.split('-')[1];
+    this.setState(state => {
+      state.tableaus[sourceIndex].pop();
+      state.tableaus[destinationIndex].push(getCard(id));
+      return { state };
+    });
+  }
+
   getDetailsForStack() {
     let onStackClick = this.drawCard.bind(this);
     let unicode = CARD_BACK_UNICODE;
@@ -114,13 +166,14 @@ class App extends React.Component {
           />
           <Foundations
             foundation={this.state.foundations}
+            onDrop={this.dropOnFoundation}
             addToFoundation={this.addToFoundation.bind(this)}
             removeFromFoundation={this.removeFromFoundation.bind(this)}
             removeFromPile={this.removeFromPile.bind(this)}
             foundations={this.state.foundations}
           />
         </div>
-        <Tableaus tableaus={this.state.tableaus} />
+        <Tableaus onDrop={this.dropOnTableau} tableaus={this.state.tableaus} />
       </main>
     );
   }

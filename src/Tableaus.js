@@ -4,8 +4,17 @@ import './main.css';
 
 class Tableaus extends React.Component {
   createTableaus(tableaus) {
+    let index = 0;
     return tableaus.map(tableau => {
-      return <Tableau cards={tableau} />;
+      const uniqueId = 'tableau-' + index++;
+      return (
+        <Tableau
+          onDrop={this.props.onDrop}
+          id={uniqueId}
+          key={uniqueId}
+          cards={tableau}
+        />
+      );
     });
   }
 
