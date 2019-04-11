@@ -10,6 +10,10 @@ class Foundations extends React.Component {
         id={'foundation-' + id}
         key={'foundation-' + id}
         onDrop={this.props.onDrop}
+        addToFoundation={this.props.addToFoundation}
+        removeFromFoundation={this.props.removeFromFoundation}
+        removeFromPile={this.props.removeFromPile}
+        removeFromTableau={this.props.removeFromTableau}
         foundation={foundations[id]}
       />
     );

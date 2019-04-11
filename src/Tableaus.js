@@ -9,6 +9,10 @@ class Tableaus extends React.Component {
       const uniqueId = 'tableau-' + index++;
       return (
         <Tableau
+          addToTableau={this.props.addToTableau}
+          removeFromFoundation={this.props.removeFromFoundation}
+          removeFromPile={this.props.removeFromPile}
+          removeFromTableau={this.props.removeFromTableau}
           onDrop={this.props.onDrop}
           id={uniqueId}
           key={uniqueId}

@@ -1,10 +1,20 @@
 import React from 'react';
 import Card from './Card';
+import { getCard, getIndex } from './utils';
 import './main.css';
 
 const FACE_DOWN_CARD_UNICODE = '\u{1F0A0}';
 
 class Tableau extends React.Component {
+  constructor(props) {
+    super(props);
+    this.drop = this.drop.bind(this);
+    this.addToTableau = this.props.addToTableau;
+    this.removeFromPile = this.props.removeFromPile;
+    this.removeFromFoundation = this.props.removeFromFoundation;
+    this.removeFromTableau = this.props.removeFromTableau;
+  }
+
   createFaceDownCards(numberOfCards) {
     const dummyArray = new Array(numberOfCards).fill(0);
     const card = { unicode: FACE_DOWN_CARD_UNICODE, color: 'purple' };
@@ -43,6 +53,30 @@ class Tableau extends React.Component {
     event.preventDefault();
   };
 
+  getIndex(id) {
+    return +id.split('-')[1];
+  }
+
+  drop(event) {
+    const sourceId = event.dataTransfer.getData('sourceId');
+    const cardId = event.dataTransfer.getData('id');
+
+    const sourceIndex = getIndex(sourceId);
+    const tableauIndex = getIndex(this.props.id);
+    const card = getCard(cardId);
+    this.addToTableau(tableauIndex, card);
+
+    if (sourceId.startsWith('pile')) {
+      return this.removeFromPile();
+    }
+
+    if (sourceId.startsWith('foundation')) {
+      return this.removeFromFoundation(sourceIndex);
+    }
+
+    this.removeFromTableau(sourceIndex);
+  }
+
   render() {
     const { cards } = this.props;
 
@@ -50,13 +84,11 @@ class Tableau extends React.Component {
       return (
         <div
           onDragOver={this.allowDrop}
-          onDrop={this.props.onDrop}
+          onDrop={this.drop}
           id={this.props.id}
           className="tableau"
         >
-          <div
-            className="tableau-card-container"
-          />
+          <div className="tableau-card-container" />
         </div>
       );
     }
@@ -65,7 +97,7 @@ class Tableau extends React.Component {
     return (
       <div
         onDragOver={this.allowDrop}
-        onDrop={this.props.onDrop}
+        onDrop={this.drop}
         className="tableau"
         id={this.props.id}
       >
