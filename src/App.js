@@ -38,6 +38,14 @@ class App extends React.Component {
     return sourceId.startsWith('foundation');
   }
 
+  removeFromTableau(index) {
+    this.setState(state => {
+      const tableaus = _.cloneDeep(state.tableaus);
+      tableaus[index].pop();
+      return { tableaus };
+    });
+  }
+
   dropOnFoundation(event) {
     event.preventDefault();
     const id = event.dataTransfer.getData('id');
@@ -50,6 +58,11 @@ class App extends React.Component {
     }
 
     this.addToFoundation(foundationIndex, card);
+
+    if (sourceId.startsWith('tableau')) {
+      const sourceTableauIndex = this.getIndex(sourceId);
+      return this.removeFromTableau(sourceTableauIndex);
+    }
 
     if (this.isSourceFoundation(sourceId)) {
       const sourceFoundationIndex = this.getIndex(sourceId);
@@ -130,8 +143,31 @@ class App extends React.Component {
     if (event.target.parentNode.parentNode.id) {
       destinationId = event.target.parentNode.parentNode.id;
     }
+
+    if (event.target.parentNode.id) {
+      destinationId = event.target.parentNode.id;
+    }
     const sourceIndex = sourceId.split('-')[1];
     const destinationIndex = destinationId.split('-')[1];
+
+    if (sourceId.startsWith('pile')) {
+      this.setState(state => {
+        state.tableaus[destinationIndex].push(getCard(id));
+        return { state };
+      });
+      this.removeFromPile();
+      return;
+    }
+
+    if (sourceId.startsWith('foundation')) {
+      this.setState(state => {
+        state.tableaus[destinationIndex].push(getCard(id));
+        return { state };
+      });
+      this.removeFromFoundation(sourceIndex);
+      return;
+    }
+
     this.setState(state => {
       state.tableaus[sourceIndex].pop();
       state.tableaus[destinationIndex].push(getCard(id));

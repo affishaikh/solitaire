@@ -94,6 +94,9 @@ main {
 }
 
 .tableau-card-container {
+  width: 144px;
+  height: 180px;
+
   background-color: #dcfafc;
   border-radius: 3%;
   position: relative;

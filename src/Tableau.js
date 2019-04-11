@@ -53,7 +53,11 @@ class Tableau extends React.Component {
           onDrop={this.props.onDrop}
           id={this.props.id}
           className="tableau"
-        />
+        >
+          <div
+            className="tableau-card-container"
+          />
+        </div>
       );
     }
 
