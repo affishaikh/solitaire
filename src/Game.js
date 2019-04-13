@@ -4,7 +4,7 @@ import Foundations from './Foundations';
 import Tableaus from './Tableaus';
 import cards from './data/cards';
 import Card from './models/card';
-import _ from 'lodash';
+import ld from 'lodash';
 
 const CARD_BACK_UNICODE = '\u{1F0A0}';
 const RELOAD_BUTTON_UNICODE = '\u{21BB}';
@@ -13,7 +13,7 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     const deck = this.createDeck();
-    const { stack, tableaus } = this.createTableausFromDeck(_.cloneDeep(deck));
+    const { stack, tableaus } = this.createTableausFromDeck(ld.cloneDeep(deck));
     this.addToFoundation = this.addToFoundation.bind(this);
     this.addToTableau = this.addToTableau.bind(this);
     this.removeFromPile = this.removeFromPile.bind(this);
@@ -37,7 +37,7 @@ class Game extends React.Component {
 
   removeFromTableau(index) {
     this.setState(state => {
-      const tableaus = _.cloneDeep(state.tableaus);
+      const tableaus = ld.cloneDeep(state.tableaus);
       tableaus[index].pop();
       return { tableaus };
     });
@@ -45,7 +45,7 @@ class Game extends React.Component {
 
   addToTableau(index, card) {
     this.setState(state => {
-      const tableaus = _.cloneDeep(state.tableaus);
+      const tableaus = ld.cloneDeep(state.tableaus);
       tableaus[index].push(card);
       return { tableaus };
     });
@@ -55,12 +55,12 @@ class Game extends React.Component {
     const stack = cards.map(card => {
       return new Card(card.type, card.number, card.unicode, card.color);
     });
-    return _.shuffle(stack);
+    return ld.shuffle(stack);
   }
 
   createTableausFromDeck(deck) {
     const tableaus = [];
-    const stack = _.cloneDeep(deck);
+    const stack = ld.cloneDeep(deck);
     for (let i = 1; i <= 7; i++) {
       const tableau = stack.splice(-i);
       tableaus.push(tableau);
@@ -70,7 +70,7 @@ class Game extends React.Component {
 
   removeFromPile() {
     this.setState(state => {
-      const pile = _.cloneDeep(state.pile);
+      const pile = ld.cloneDeep(state.pile);
       pile.shift();
       return { pile };
     });
@@ -78,7 +78,7 @@ class Game extends React.Component {
 
   removeFromFoundation(index) {
     this.setState(state => {
-      const foundations = _.cloneDeep(state.foundations);
+      const foundations = ld.cloneDeep(state.foundations);
       foundations[index].pop();
       return { foundations };
     });
@@ -86,7 +86,7 @@ class Game extends React.Component {
 
   addToFoundation(index, card) {
     this.setState(state => {
-      const foundations = _.cloneDeep(state.foundations);
+      const foundations = ld.cloneDeep(state.foundations);
       foundations[index].push(card);
       return { foundations };
     });
@@ -94,14 +94,14 @@ class Game extends React.Component {
 
   addToPile(drawnCard) {
     this.setState(state => {
-      const pile = _.cloneDeep(state.pile);
+      const pile = ld.cloneDeep(state.pile);
       pile.unshift(drawnCard);
       return { pile };
     });
   }
 
   drawCard() {
-    const drawnCard = _.last(this.state.stack);
+    const drawnCard = ld.last(this.state.stack);
     this.setState(state => {
       state.stack.pop();
     });
@@ -110,7 +110,7 @@ class Game extends React.Component {
 
   reloadStack() {
     this.setState(state => {
-      const stack = _.cloneDeep(state.pile);
+      const stack = ld.cloneDeep(state.pile);
       const pile = [];
       return { stack, pile };
     });
@@ -139,7 +139,7 @@ class Game extends React.Component {
             onStackClick={onStackClick}
             unicode={unicode}
             stackLength={this.state.stack.length}
-            card={_.head(this.state.pile)}
+            card={ld.head(this.state.pile)}
           />
           <Foundations
             foundation={this.state.foundations}

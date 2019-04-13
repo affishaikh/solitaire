@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from './Card';
+import ld from 'lodash';
 import { getCard, getIndex } from './utils';
 import './main.css';
 
@@ -57,6 +58,27 @@ class Tableau extends React.Component {
     return +id.split('-')[1];
   }
 
+  isAlternateDescendant(topCardOfTableau, card) {
+    return (
+      topCardOfTableau.color !== card.color &&
+      topCardOfTableau.number === card.number + 1
+    );
+  }
+
+  canPlayedOnTableau(card) {
+    const { cards } = this.props;
+    const topCardOfTableau = ld.last(cards);
+
+    if (cards.length === 0) {
+      return false;
+    }
+
+    if (this.isAlternateDescendant(topCardOfTableau, card)) {
+      return true;
+    }
+    return false;
+  }
+
   drop(event) {
     const sourceId = event.dataTransfer.getData('sourceId');
     const cardId = event.dataTransfer.getData('id');
@@ -64,6 +86,11 @@ class Tableau extends React.Component {
     const sourceIndex = getIndex(sourceId);
     const tableauIndex = getIndex(this.props.id);
     const card = getCard(cardId);
+
+    if (!this.canPlayedOnTableau(card)) {
+      return false;
+    }
+
     this.addToTableau(tableauIndex, card);
 
     if (sourceId.startsWith('pile')) {
