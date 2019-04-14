@@ -38,7 +38,16 @@ class Game extends React.Component {
   removeFromTableau(index) {
     this.setState(state => {
       const tableaus = ld.cloneDeep(state.tableaus);
-      tableaus[index].pop();
+      const tableau = tableaus[index];
+      tableau.faceUpCards.pop();
+      if (
+        tableau.faceUpCards.length === 0 &&
+        tableau.faceDownCards.length > 0
+      ) {
+        const card = ld.last(tableau.faceDownCards);
+        tableau.faceDownCards.pop();
+        tableau.faceUpCards.push(card);
+      }
       return { tableaus };
     });
   }
@@ -46,7 +55,8 @@ class Game extends React.Component {
   addToTableau(index, card) {
     this.setState(state => {
       const tableaus = ld.cloneDeep(state.tableaus);
-      tableaus[index].push(card);
+      const tableau = tableaus[index];
+      tableau.faceUpCards.push(card);
       return { tableaus };
     });
   }
@@ -62,7 +72,10 @@ class Game extends React.Component {
     const tableaus = [];
     const stack = ld.cloneDeep(deck);
     for (let i = 1; i <= 7; i++) {
-      const tableau = stack.splice(-i);
+      const cards = stack.splice(-i);
+      const faceDownCards = cards.slice(0, cards.length - 1);
+      const faceUpCards = cards.slice(-1);
+      const tableau = { faceDownCards, faceUpCards };
       tableaus.push(tableau);
     }
     return { stack, tableaus };

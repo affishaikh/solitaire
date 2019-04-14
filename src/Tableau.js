@@ -16,10 +16,9 @@ class Tableau extends React.Component {
     this.removeFromTableau = this.props.removeFromTableau;
   }
 
-  createFaceDownCards(numberOfCards) {
-    const dummyArray = new Array(numberOfCards).fill(0);
+  createFaceDownCards(faceDownCards) {
     const card = { unicode: FACE_DOWN_CARD_UNICODE, color: 'purple' };
-    return dummyArray.map(() => {
+    return faceDownCards.map(() => {
       return (
         <div className="tableau-card-container">
           <Card card={card} />
@@ -28,18 +27,20 @@ class Tableau extends React.Component {
     });
   }
 
-  createFaceUpCard(card) {
-    return (
-      <div className="tableau-card-container">
-        <Card drag={this.drag.bind(this)} card={card} />
-      </div>
-    );
+  createFaceUpCard(faceUpCards) {
+    return faceUpCards.map(card => {
+      return (
+        <div className="tableau-card-container">
+          <Card drag={this.drag.bind(this)} card={card} />
+        </div>
+      );
+    });
   }
 
-  createCards(cards) {
-    const faceDownCards = this.createFaceDownCards(cards.length - 1);
-    const faceUpCard = this.createFaceUpCard(cards.slice(-1)[0]);
-    return { faceDownCards, faceUpCard };
+  createCards(tableau) {
+    const faceDownCards = this.createFaceDownCards(tableau.faceDownCards);
+    const faceUpCards = this.createFaceUpCard(tableau.faceUpCards);
+    return { faceDownCards, faceUpCards };
   }
 
   drag(event) {
@@ -66,7 +67,7 @@ class Tableau extends React.Component {
   }
 
   canPlayedOnTableau(card) {
-    const { cards } = this.props;
+    const cards = this.props.tableau.faceUpCards;
     const topCardOfTableau = ld.last(cards);
 
     if (cards.length === 0) {
@@ -105,9 +106,12 @@ class Tableau extends React.Component {
   }
 
   render() {
-    const { cards } = this.props;
+    const { tableau } = this.props;
 
-    if (cards.length === 0) {
+    if (
+      tableau.faceDownCards.length === 0 &&
+      tableau.faceUpCards.length === 0
+    ) {
       return (
         <div
           onDragOver={this.allowDrop}
@@ -120,7 +124,7 @@ class Tableau extends React.Component {
       );
     }
 
-    const { faceDownCards, faceUpCard } = this.createCards(cards);
+    const { faceDownCards, faceUpCards } = this.createCards(tableau);
     return (
       <div
         onDragOver={this.allowDrop}
@@ -128,7 +132,7 @@ class Tableau extends React.Component {
         className="tableau"
         id={this.props.id}
       >
-        {faceDownCards} {faceUpCard}
+        {faceDownCards} {faceUpCards}
       </div>
     );
   }

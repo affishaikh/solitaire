@@ -16,7 +16,7 @@ class Tableaus extends React.Component {
           onDrop={this.props.onDrop}
           id={uniqueId}
           key={uniqueId}
-          cards={tableau}
+          tableau={tableau}
         />
       );
     });
