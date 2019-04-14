@@ -2,7 +2,7 @@ import React from 'react';
 import Card from './Card';
 import { getCard, getIndex } from './utils';
 import './main.css';
-import _ from 'lodash';
+import ld from 'lodash';
 
 class Foundation extends React.Component {
   constructor(props) {
@@ -28,6 +28,22 @@ class Foundation extends React.Component {
     return +id.split('-')[1];
   }
 
+  areConsecutiveOfSameSuit(topCard, card) {
+    return topCard.type === card.type && topCard.number === card.number - 1;
+  }
+
+  canPlayedOnFoundation(card) {
+    const { foundation } = this.props;
+    if (foundation.length === 0) {
+      return card.number === 1;
+    }
+
+    const topCard = ld.last(this.props.foundation);
+    if (this.areConsecutiveOfSameSuit(topCard, card)) {
+      return true;
+    }
+  }
+
   drop(event) {
     event.preventDefault();
     const cardId = event.dataTransfer.getData('id');
@@ -35,6 +51,11 @@ class Foundation extends React.Component {
     const card = getCard(cardId);
 
     let foundationIndex = getIndex(this.props.id);
+
+    if (!this.canPlayedOnFoundation(card)) {
+      return;
+    }
+
     this.addToFoundation(foundationIndex, card);
 
     const sourceIndex = getIndex(sourceId);
@@ -50,7 +71,7 @@ class Foundation extends React.Component {
   }
 
   render() {
-    const card = _.last(this.props.foundation);
+    const card = ld.last(this.props.foundation);
     if (!card) {
       return (
         <div

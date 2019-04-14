@@ -66,12 +66,17 @@ class Tableau extends React.Component {
     );
   }
 
-  canPlayedOnTableau(card) {
-    const cards = this.props.tableau.faceUpCards;
-    const topCardOfTableau = ld.last(cards);
+  isTableauEmpty() {
+    const { faceUpCards, faceDownCards } = this.props.tableau;
+    return faceUpCards.length === 0 && faceDownCards.length === 0;
+  }
 
-    if (cards.length === 0) {
-      return false;
+  canPlayedOnTableau(card) {
+    const faceUpCards = this.props.tableau.faceUpCards;
+    const topCardOfTableau = ld.last(faceUpCards);
+
+    if (this.isTableauEmpty()) {
+      return card.number === 13;
     }
 
     if (this.isAlternateDescendant(topCardOfTableau, card)) {
@@ -89,7 +94,7 @@ class Tableau extends React.Component {
     const card = getCard(cardId);
 
     if (!this.canPlayedOnTableau(card)) {
-      return false;
+      return;
     }
 
     this.addToTableau(tableauIndex, card);

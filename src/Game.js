@@ -35,15 +35,17 @@ class Game extends React.Component {
     return sourceId.startsWith('foundation');
   }
 
+  isSwappingRequired(tableau) {
+    return tableau.faceUpCards.length === 0 && tableau.faceDownCards.length > 0;
+  }
+
   removeFromTableau(index) {
     this.setState(state => {
       const tableaus = ld.cloneDeep(state.tableaus);
       const tableau = tableaus[index];
       tableau.faceUpCards.pop();
-      if (
-        tableau.faceUpCards.length === 0 &&
-        tableau.faceDownCards.length > 0
-      ) {
+
+      if (this.isSwappingRequired(tableau)) {
         const card = ld.last(tableau.faceDownCards);
         tableau.faceDownCards.pop();
         tableau.faceUpCards.push(card);
