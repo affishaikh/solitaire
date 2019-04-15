@@ -39,11 +39,12 @@ class Game extends React.Component {
     return tableau.faceUpCards.length === 0 && tableau.faceDownCards.length > 0;
   }
 
-  removeFromTableau(index) {
+  removeFromTableau(index, cards) {
     this.setState(state => {
       const tableaus = ld.cloneDeep(state.tableaus);
       const tableau = tableaus[index];
-      tableau.faceUpCards.pop();
+      const numberOfCards = cards.length;
+      tableau.faceUpCards.splice(-numberOfCards);
 
       if (this.isSwappingRequired(tableau)) {
         const card = ld.last(tableau.faceDownCards);
@@ -54,11 +55,11 @@ class Game extends React.Component {
     });
   }
 
-  addToTableau(index, card) {
+  addToTableau(index, cards) {
     this.setState(state => {
       const tableaus = ld.cloneDeep(state.tableaus);
       const tableau = tableaus[index];
-      tableau.faceUpCards.push(card);
+      tableau.faceUpCards = tableau.faceUpCards.concat(cards);
       return { tableaus };
     });
   }

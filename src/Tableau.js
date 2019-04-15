@@ -44,7 +44,16 @@ class Tableau extends React.Component {
   }
 
   drag(event) {
-    event.dataTransfer.setData('id', event.target.id);
+    const draggedCardId = event.target.id;
+    const { faceUpCards } = this.props.tableau;
+    const index = faceUpCards.findIndex(card => {
+      return card.unicode === draggedCardId;
+    });
+    const requiredCards = faceUpCards.slice(index);
+    const cardIds = requiredCards.map(card => {
+      return card.unicode;
+    });
+    event.dataTransfer.setData('cardIds', JSON.stringify(cardIds));
     event.dataTransfer.setData(
       'sourceId',
       event.target.parentNode.parentNode.id
@@ -85,19 +94,24 @@ class Tableau extends React.Component {
     return false;
   }
 
+  getCards(cardIds) {
+    return cardIds.map(cardId => {
+      return getCard(cardId);
+    });
+  }
+
   drop(event) {
     const sourceId = event.dataTransfer.getData('sourceId');
-    const cardId = event.dataTransfer.getData('id');
-
+    const cardIds = JSON.parse(event.dataTransfer.getData('cardIds'));
     const sourceIndex = getIndex(sourceId);
     const tableauIndex = getIndex(this.props.id);
-    const card = getCard(cardId);
+    const cards = this.getCards(cardIds);
 
-    if (!this.canPlayedOnTableau(card)) {
+    if (!this.canPlayedOnTableau(ld.first(cards))) {
       return;
     }
 
-    this.addToTableau(tableauIndex, card);
+    this.addToTableau(tableauIndex, cards);
 
     if (sourceId.startsWith('pile')) {
       return this.removeFromPile();
@@ -107,7 +121,7 @@ class Tableau extends React.Component {
       return this.removeFromFoundation(sourceIndex);
     }
 
-    this.removeFromTableau(sourceIndex);
+    this.removeFromTableau(sourceIndex, cards);
   }
 
   render() {

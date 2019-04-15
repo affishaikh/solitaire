@@ -46,9 +46,10 @@ class Foundation extends React.Component {
 
   drop(event) {
     event.preventDefault();
-    const cardId = event.dataTransfer.getData('id');
+    const cardIds = JSON.parse(event.dataTransfer.getData('cardIds'));
     const sourceId = event.dataTransfer.getData('sourceId');
-    const card = getCard(cardId);
+    const id = cardIds[0];
+    const card = getCard(id);
 
     let foundationIndex = getIndex(this.props.id);
 
@@ -59,8 +60,9 @@ class Foundation extends React.Component {
     this.addToFoundation(foundationIndex, card);
 
     const sourceIndex = getIndex(sourceId);
+
     if (sourceId.startsWith('tableau')) {
-      return this.removeFromTableau(sourceIndex);
+      return this.removeFromTableau(sourceIndex, [card]);
     }
 
     if (sourceId.startsWith('foundation')) {
