@@ -4,6 +4,7 @@ import Foundations from './Foundations';
 import Tableaus from './Tableaus';
 import cards from './data/cards';
 import Card from './models/card';
+import PopUp from './PopUp';
 import ld from 'lodash';
 
 const CARD_BACK_UNICODE = '\u{1F0A0}';
@@ -21,6 +22,7 @@ class Game extends React.Component {
     this.removeFromTableau = this.removeFromTableau.bind(this);
     this.state = {
       tableaus,
+      hasWon: false,
       stack,
       foundations: [[], [], [], []],
       pile: []
@@ -100,11 +102,21 @@ class Game extends React.Component {
     });
   }
 
+  hasWon(foundations) {
+    return foundations.every(foundation => {
+      return foundation.length === 13;
+    });
+  }
+
   addToFoundation(index, card) {
     this.setState(state => {
       const foundations = ld.cloneDeep(state.foundations);
       foundations[index].push(card);
-      return { foundations };
+      let hasWon = false;
+      if (this.hasWon(foundations)) {
+        hasWon = true;
+      }
+      return { foundations, hasWon };
     });
   }
 
@@ -147,6 +159,10 @@ class Game extends React.Component {
 
   render() {
     const { onStackClick, unicode } = this.getDetailsForStack();
+
+    if (this.state.hasWon) {
+      return <PopUp />;
+    }
 
     return (
       <main>
