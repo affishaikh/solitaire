@@ -1,13 +1,13 @@
 {
-  "main.css": "/solitaire/static/css/main.238b9a42.chunk.css",
-  "main.js": "/solitaire/static/js/main.726a84ce.chunk.js",
-  "main.js.map": "/solitaire/static/js/main.726a84ce.chunk.js.map",
+  "main.css": "/solitaire/static/css/main.51c6fa45.chunk.css",
+  "main.js": "/solitaire/static/js/main.21207abe.chunk.js",
+  "main.js.map": "/solitaire/static/js/main.21207abe.chunk.js.map",
   "runtime~main.js": "/solitaire/static/js/runtime~main.1eee08ec.js",
   "runtime~main.js.map": "/solitaire/static/js/runtime~main.1eee08ec.js.map",
   "static/js/2.355bdcc4.chunk.js": "/solitaire/static/js/2.355bdcc4.chunk.js",
   "static/js/2.355bdcc4.chunk.js.map": "/solitaire/static/js/2.355bdcc4.chunk.js.map",
   "index.html": "/solitaire/index.html",
-  "precache-manifest.5f94adeeccd5f9b9c13ffef16d9d21f6.js": "/solitaire/precache-manifest.5f94adeeccd5f9b9c13ffef16d9d21f6.js",
+  "precache-manifest.ae415bf8718d86eeb357d37e35444607.js": "/solitaire/precache-manifest.ae415bf8718d86eeb357d37e35444607.js",
   "service-worker.js": "/solitaire/service-worker.js",
-  "static/css/main.238b9a42.chunk.css.map": "/solitaire/static/css/main.238b9a42.chunk.css.map"
+  "static/css/main.51c6fa45.chunk.css.map": "/solitaire/static/css/main.51c6fa45.chunk.css.map"
 }
