@@ -20,7 +20,8 @@ class Foundation extends React.Component {
   }
 
   drag(event) {
-    event.dataTransfer.setData('id', event.target.id);
+    const cardIds = event.target.id;
+    event.dataTransfer.setData('cardIds', JSON.stringify([cardIds]));
     event.dataTransfer.setData('sourceId', event.target.parentNode.id);
   }
 
