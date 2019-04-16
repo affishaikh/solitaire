@@ -133,7 +133,7 @@ class Tableau extends React.Component {
           id={this.props.id}
           className="tableau"
         >
-          <div className="tableau-card-container" />
+          <div className="empty-tableau-card" />
         </div>
       );
     }
