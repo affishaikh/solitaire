@@ -19,20 +19,18 @@ class Tableau extends React.Component {
   createFaceDownCards(faceDownCards) {
     const card = { unicode: FACE_DOWN_CARD_UNICODE, color: 'purple' };
     return faceDownCards.map(() => {
-      return (
-        <div className="tableau-card-container">
-          <Card card={card} />
-        </div>
-      );
+      return <Card card={card} className={'tableau-card'} />;
     });
   }
 
   createFaceUpCard(faceUpCards) {
     return faceUpCards.map(card => {
       return (
-        <div className="tableau-card-container">
-          <Card drag={this.drag.bind(this)} card={card} />
-        </div>
+        <Card
+          className={'tableau-card'}
+          drag={this.drag.bind(this)}
+          card={card}
+        />
       );
     });
   }
@@ -54,10 +52,7 @@ class Tableau extends React.Component {
       return card.unicode;
     });
     event.dataTransfer.setData('cardIds', JSON.stringify(cardIds));
-    event.dataTransfer.setData(
-      'sourceId',
-      event.target.parentNode.parentNode.id
-    );
+    event.dataTransfer.setData('sourceId', event.target.parentNode.id);
   }
 
   allowDrop = event => {

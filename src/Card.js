@@ -8,7 +8,7 @@ class Card extends React.Component {
       this.drag = this.props.drag;
     }
 
-    const className = 'card ' + color;
+    const className = 'card ' + color + ' ' + this.props.className;
 
     return (
       <div
